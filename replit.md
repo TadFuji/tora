@@ -3,9 +3,13 @@
 ## Overview
 Google Gemini の File Search 機能を使用した、就業規則に関する質問応答Webチャットボットです。
 PDFファイルから情報を抽出し、ユーザーの質問に対してAIが正確な回答を生成します。
-回答の下部にはPDFからの引用元が「📚 参照元」として表示されます。
+回答の下部にはPDFからの引用元が小さなボタン形式で表示され、クリックすると詳細を確認できます。
 
 ## Recent Changes
+- **引用元のボタン形式UI** (November 13, 2025)
+  - 引用元を小さなボタン（📄 引用 1、📄 引用 2...）形式に変更
+  - クリックで詳細テキストが展開/折りたたみ
+  - より省スペースでコンパクトな表示
 - **引用元表示機能の追加** (November 13, 2025)
   - grounding_metadataから引用元情報を抽出
   - 回答の下部に「📚 参照元」として表示
@@ -28,7 +32,8 @@ PDFファイルから情報を抽出し、ユーザーの質問に対してAIが
   - grounding_metadata から引用元情報を抽出
   - /chat エンドポイントでreplyとsourcesを返す
 - `templates/index.html` - チャットボットUI（紫グラデーション、モダンデザイン）
-  - 引用元を回答の下部に表示
+  - 引用元を小さなボタン形式で表示
+  - クリックで詳細テキストを展開/折りたたみ
   - 「📚 参照元」セクションで引用元を可視化
 
 ### Setup Scripts
@@ -58,7 +63,8 @@ Webアプリケーションはポート5000で自動起動します：
 - URLにアクセスしてチャットボットを使用
 - タイトル：「🏢 虎ノ門堂の規則」
 - 質問例：「試用期間について教えてください」「有給休暇について知りたい」
-- 回答の下部に「📚 参照元」が表示され、PDFからの引用が確認できます
+- 回答の下部に「📚 参照元」が小さなボタン形式で表示されます
+- ボタン（📄 引用 1、📄 引用 2...）をクリックすると、PDFからの引用テキストが表示されます
 
 ### CLI (Optional)
 質問スクリプトを実行：
@@ -78,14 +84,14 @@ python ask_question.py
 
 ## Features
 - **RAG (Retrieval Augmented Generation)**: PDFから関連情報を自動抽出
-- **引用元表示**: 回答の根拠となるPDF箇所を「📚 参照元」として表示
+- **引用元表示（ボタン形式）**: 回答の根拠となるPDF箇所を小さなボタンで表示、クリックで詳細確認
 - **セキュアな設計**: XSS対策、エラー情報の隠蔽
 - **モダンUI**: 紫グラデーションのチャットインターフェース
 
 ## User Preferences
 - タイトル: 「虎ノ門堂の規則」を使用
 - デザイン: 紫グラデーションのモダンなチャットUI
-- 引用元表示: RAGの動作を可視化するため、回答の下部に表示
+- 引用元表示: 小さなボタン形式で省スペース、クリックで詳細展開
 
 ## Project Architecture
 Google Gemini の File Search 機能を使用したRAG（Retrieval Augmented Generation）システム。
@@ -96,4 +102,4 @@ Flask Webアプリケーションとして実装し、PDFファイルから自�
 - Backend: Flask REST API（/chat エンドポイント）
 - AI Model: Google Gemini 2.5 Flash with File Search
 - Security: textContent rendering, generic error messages
-- RAG Visualization: grounding_metadata から引用元を抽出して表示
+- RAG Visualization: grounding_metadata から引用元を抽出し、小さなボタン形式で表示
