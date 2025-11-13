@@ -55,7 +55,7 @@ PDFファイルから情報を抽出し、ユーザーの質問に対してAIが
 - Store ID: `fileSearchStores/zetcwx20oo6y-e6zg8karixpr`
 - Created: November 13, 2025
 - Uploaded Files: 就業規則.pdf
-- Model: gemini-2.5-flash-lite
+- Model: gemini-2.5-flash
 
 ## Usage
 ### Web Application
@@ -100,6 +100,6 @@ Flask Webアプリケーションとして実装し、PDFファイルから自�
 ### Architecture Details
 - Frontend: HTML/CSS/JavaScript（シングルページチャットUI）
 - Backend: Flask REST API（/chat エンドポイント）
-- AI Model: Google Gemini 2.5 Flash-Lite with File Search
+- AI Model: Google Gemini 2.5 Flash with File Search
 - Security: textContent rendering, generic error messages
 - RAG Visualization: grounding_metadata から引用元を抽出し、小さなボタン形式で表示

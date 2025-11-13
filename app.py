@@ -24,7 +24,7 @@ def chat():
             return jsonify({'error': '質問を入力してください'}), 400
         
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model="gemini-2.5-flash",
             contents=user_message,
             config=types.GenerateContentConfig(
                 tools=[
