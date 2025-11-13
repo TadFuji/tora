@@ -99,42 +99,62 @@
         }
 
         .message-sources {
-            margin-top: 12px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            font-size: 12px;
+            margin-top: 10px;
+            font-size: 11px;
         }
 
         .sources-title {
             font-weight: 600;
             color: #667eea;
-            margin-bottom: 8px;
-        }
-
-        .source-item {
-            margin-bottom: 8px;
-            padding: 8px;
-            background: white;
-            border-radius: 6px;
-            border-left: 3px solid #667eea;
-        }
-
-        .source-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .source-title {
-            font-weight: 600;
-            color: #333;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .source-text {
-            color: #666;
+            margin-bottom: 6px;
             font-size: 11px;
+        }
+
+        .source-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .source-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 10px;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .source-button:hover {
+            background: #e8e8ff;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .source-button-icon {
+            font-size: 12px;
+        }
+
+        .source-detail {
+            display: none;
+            margin-top: 8px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 2px solid #667eea;
+            font-size: 10px;
+            color: #666;
             line-height: 1.4;
+        }
+
+        .source-detail.active {
+            display: block;
         }
 
         .chat-input-container {
@@ -291,27 +311,43 @@
                 sourcesTitle.textContent = '📚 参照元';
                 sourcesDiv.appendChild(sourcesTitle);
                 
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.className = 'source-buttons';
+                
                 sources.forEach((source, index) => {
-                    const sourceItem = document.createElement('div');
-                    sourceItem.className = 'source-item';
+                    const button = document.createElement('button');
+                    button.className = 'source-button';
+                    button.type = 'button';
                     
-                    if (source.title) {
-                        const titleSpan = document.createElement('span');
-                        titleSpan.className = 'source-title';
-                        titleSpan.textContent = source.title;
-                        sourceItem.appendChild(titleSpan);
-                    }
+                    const icon = document.createElement('span');
+                    icon.className = 'source-button-icon';
+                    icon.textContent = '📄';
+                    button.appendChild(icon);
+                    
+                    const label = document.createElement('span');
+                    label.textContent = `引用 ${index + 1}`;
+                    button.appendChild(label);
                     
                     if (source.text) {
-                        const textSpan = document.createElement('div');
-                        textSpan.className = 'source-text';
-                        textSpan.textContent = source.text;
-                        sourceItem.appendChild(textSpan);
+                        const detailId = `source-detail-${Date.now()}-${index}`;
+                        button.onclick = () => {
+                            const detail = document.getElementById(detailId);
+                            detail.classList.toggle('active');
+                        };
+                        
+                        buttonsContainer.appendChild(button);
+                        
+                        const detailDiv = document.createElement('div');
+                        detailDiv.id = detailId;
+                        detailDiv.className = 'source-detail';
+                        detailDiv.textContent = source.text;
+                        buttonsContainer.appendChild(detailDiv);
+                    } else {
+                        buttonsContainer.appendChild(button);
                     }
-                    
-                    sourcesDiv.appendChild(sourceItem);
                 });
                 
+                sourcesDiv.appendChild(buttonsContainer);
                 wrapper.appendChild(sourcesDiv);
             }
             
