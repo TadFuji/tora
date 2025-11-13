@@ -98,6 +98,45 @@
             font-weight: 600;
         }
 
+        .message-sources {
+            margin-top: 12px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .sources-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .source-item {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+
+        .source-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .source-title {
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .source-text {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
         .chat-input-container {
             padding: 20px;
             background: white;
@@ -226,7 +265,7 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
 
-        function addMessage(content, isUser) {
+        function addMessage(content, isUser, sources = null) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
             
@@ -242,6 +281,40 @@
             
             wrapper.appendChild(labelDiv);
             wrapper.appendChild(contentDiv);
+            
+            if (!isUser && sources && sources.length > 0) {
+                const sourcesDiv = document.createElement('div');
+                sourcesDiv.className = 'message-sources';
+                
+                const sourcesTitle = document.createElement('div');
+                sourcesTitle.className = 'sources-title';
+                sourcesTitle.textContent = '📚 参照元';
+                sourcesDiv.appendChild(sourcesTitle);
+                
+                sources.forEach((source, index) => {
+                    const sourceItem = document.createElement('div');
+                    sourceItem.className = 'source-item';
+                    
+                    if (source.title) {
+                        const titleSpan = document.createElement('span');
+                        titleSpan.className = 'source-title';
+                        titleSpan.textContent = source.title;
+                        sourceItem.appendChild(titleSpan);
+                    }
+                    
+                    if (source.text) {
+                        const textSpan = document.createElement('div');
+                        textSpan.className = 'source-text';
+                        textSpan.textContent = source.text;
+                        sourceItem.appendChild(textSpan);
+                    }
+                    
+                    sourcesDiv.appendChild(sourceItem);
+                });
+                
+                wrapper.appendChild(sourcesDiv);
+            }
+            
             messageDiv.appendChild(wrapper);
             
             chatMessages.appendChild(messageDiv);
@@ -299,7 +372,7 @@
                 removeTypingIndicator();
 
                 if (response.ok) {
-                    addMessage(data.reply, false);
+                    addMessage(data.reply, false, data.sources);
                 } else {
                     addMessage('エラー: ' + (data.error || '回答を取得できませんでした'), false);
                 }

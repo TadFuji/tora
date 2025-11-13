@@ -37,7 +37,29 @@ def chat():
             )
         )
         
-        return jsonify({'reply': response.text})
+        sources = []
+        if response.candidates and len(response.candidates) > 0:
+            candidate = response.candidates[0]
+            if hasattr(candidate, 'grounding_metadata') and candidate.grounding_metadata:
+                grounding = candidate.grounding_metadata
+                if hasattr(grounding, 'grounding_chunks') and grounding.grounding_chunks:
+                    for chunk in grounding.grounding_chunks:
+                        source_info = {}
+                        if hasattr(chunk, 'retrieved_context') and chunk.retrieved_context:
+                            context = chunk.retrieved_context
+                            if hasattr(context, 'title'):
+                                source_info['title'] = context.title
+                            if hasattr(context, 'uri'):
+                                source_info['uri'] = context.uri
+                            if hasattr(context, 'text'):
+                                source_info['text'] = context.text[:200] if len(context.text) > 200 else context.text
+                        if source_info:
+                            sources.append(source_info)
+        
+        return jsonify({
+            'reply': response.text,
+            'sources': sources
+        })
     
     except Exception as e:
         app.logger.error(f"Error in chat endpoint: {str(e)}")
