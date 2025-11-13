@@ -40,7 +40,8 @@ def chat():
         return jsonify({'reply': response.text})
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        app.logger.error(f"Error in chat endpoint: {str(e)}")
+        return jsonify({'error': '申し訳ございません。回答の生成中にエラーが発生しました。もう一度お試しください。'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
