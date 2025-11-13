@@ -1,11 +1,8 @@
-import google.generativeai as genai
+from google import genai
 import os
 
-# APIキーをロード
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
-
 # File Search 用クライアント
-client = genai.Client()
+client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
 
 # ストアにつける名前（自由）
 STORE_DISPLAY_NAME = "就業規則ストア"
