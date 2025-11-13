@@ -24,3 +24,38 @@ MANIFEST
 .coverage
 htmlcov/
 *.log
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Replit specific
+.replit
+replit.nix
+.config/
+.cache/
+.upm/
+uv.lock
+replit.md
+main.py
+
+# Project specific
+static/
+/tmp/
+attached_assets/image_*.png
